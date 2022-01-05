@@ -12,10 +12,6 @@ function ToDo({text, id, category}:ITodo) {
         //string으로 한다면 잘 못된 값이 들어왔을 때 대처하기 어렵다.
         //그렇다고 길게 쓰고 싶지 않을 때 쓰는 typescript 팁
         const {currentTarget : { name }} = event;
-
-        
-
-        //state를 수정할 때는 mutate하면 안된다. 아예 새로 만들어줘야 한다
         //그래서 현재값을 받아오는 매개변수를 선언하고 만든다..
         setToDos(oldToDos => {
             const targetIndex = oldToDos.findIndex(toDo => toDo.id === id)
@@ -25,12 +21,22 @@ function ToDo({text, id, category}:ITodo) {
             return [...oldToDos.slice(0,targetIndex), newToDo, ...oldToDos.slice(targetIndex+1) ];
         })
     }
+
+    const DeleteClick = (id:ITodo["id"]) => {
+        setToDos((oldToDos) => {
+            const targetIndex = oldToDos.findIndex(toDo => toDo.id === id) //toDoState를 받아와서 id를 비교해봄
+            console.log(targetIndex)
+            return [...oldToDos.slice(0,targetIndex), ...oldToDos.slice(targetIndex+1)]
+        })
+    }
+    
     return (
         <li>
             <span>{text}</span>
             {category !== categories.DOING && <button name={categories.DOING} onClick={onClick}>Doing</button>}
             {category !== categories.TO_DO &&<button name={categories.DOING}onClick={onClick}>To Do</button>}
             {category !== categories.DONE &&<button name={categories.DOING} onClick={onClick}>Done</button>}
+            <button onClick={() => DeleteClick(id)}>Del</button>
         </li>
     )
 }
