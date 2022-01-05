@@ -1,0 +1,38 @@
+import React from 'react'
+import { useSetRecoilState } from 'recoil';
+import { categories, ITodo, toDoState } from './atoms'
+
+function ToDo({text, id, category}:ITodo) {
+
+    // front == array  |  ...front는 front안에 있는걸 풀어서 넣는다.
+    // front라고 쓰면 배열이 들어간다
+
+    const setToDos = useSetRecoilState(toDoState)
+    const onClick = (event:React.MouseEvent<HTMLButtonElement>) => {
+        //string으로 한다면 잘 못된 값이 들어왔을 때 대처하기 어렵다.
+        //그렇다고 길게 쓰고 싶지 않을 때 쓰는 typescript 팁
+        const {currentTarget : { name }} = event;
+
+        
+
+        //state를 수정할 때는 mutate하면 안된다. 아예 새로 만들어줘야 한다
+        //그래서 현재값을 받아오는 매개변수를 선언하고 만든다..
+        setToDos(oldToDos => {
+            const targetIndex = oldToDos.findIndex(toDo => toDo.id === id)
+            //findIndex는 배열을 map처럼 펼쳐주고 그 하나하나 원소.id가 현재 넘어오는 <li>가 될 id와 비교해서 같은것을 targetindex에 넣어준다
+            const oldToDo = oldToDos[targetIndex];
+            const newToDo = {text, id, category:name as categories}
+            return [...oldToDos.slice(0,targetIndex), newToDo, ...oldToDos.slice(targetIndex+1) ];
+        })
+    }
+    return (
+        <li>
+            <span>{text}</span>
+            {category !== categories.DOING && <button name={categories.DOING} onClick={onClick}>Doing</button>}
+            {category !== categories.TO_DO &&<button name={categories.DOING}onClick={onClick}>To Do</button>}
+            {category !== categories.DONE &&<button name={categories.DOING} onClick={onClick}>Done</button>}
+        </li>
+    )
+}
+
+export default ToDo
