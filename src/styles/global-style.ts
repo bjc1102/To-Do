@@ -2,6 +2,8 @@ import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&family=Source+Sans+Pro:wght@300;400&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap');
+ /* font-family: 'Noto Sans KR', sans-serif; */
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -28,7 +30,8 @@ export const GlobalStyle = createGlobalStyle`
     display: block;
   }
   body {
-    line-height: 1;
+    line-height: 1; 
+    font-family: 'Noto Sans KR', sans-serif;
   }
   ol, ul {
     list-style: none;

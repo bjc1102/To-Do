@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSetRecoilState } from 'recoil';
+import styled from 'styled-components';
 import { categories, ITodo, toDoState } from './atoms'
 
 function ToDo({text, id, category}:ITodo) {
@@ -29,16 +30,57 @@ function ToDo({text, id, category}:ITodo) {
             return [...oldToDos.slice(0,targetIndex), ...oldToDos.slice(targetIndex+1)]
         })
     }
-    
+
     return (
-        <li>
-            <span>{text}</span>
-            {category !== categories.DOING && <button name={categories.DOING} onClick={onClick}>Doing</button>}
-            {category !== categories.TO_DO &&<button name={categories.DOING}onClick={onClick}>To Do</button>}
-            {category !== categories.DONE &&<button name={categories.DOING} onClick={onClick}>Done</button>}
-            <button onClick={() => DeleteClick(id)}>Del</button>
-        </li>
+        <List>
+            <Content>{text}</Content>
+            <ButtonList>
+                {category !== categories.DOING && <button name={categories.DOING} onClick={onClick}>Doing</button>}
+                {category !== categories.TO_DO &&<button name={categories.TO_DO}onClick={onClick}>To Do</button>}
+                {category !== categories.DONE &&<button name={categories.DONE} onClick={onClick}>Done</button>}
+                <button onClick={() => DeleteClick(id)}>-</button>
+            </ButtonList>
+        </List>
     )
 }
 
 export default ToDo
+
+
+const Content = styled.span`
+    color: ${props=>props.theme.textColor};
+    display: block;
+`
+
+const List = styled.li`
+    min-width: 400px;
+    height: 30px;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type:none;
+    border: 1px solid ${props => props.theme.textColor};
+    border-radius: 10px;
+    &:hover {
+        span {
+            color: ${props => props.theme.accentColor};
+        }
+        border: 1px solid ${props => props.theme.accentColor};
+    }
+`
+
+const ButtonList = styled.div`
+    button {
+        border: 1px solid ${props=>props.theme.textColor};
+        background-color: ${props => props.theme.bgColor};
+        color: ${props => props.theme.textColor};
+        border-radius: 3px;
+        margin: 1px;
+        &:hover{
+            border: 1px solid ${props=>props.theme.accentColor};
+            color: ${props=>props.theme.accentColor};
+        }
+    }
+`
